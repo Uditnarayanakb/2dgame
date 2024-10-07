@@ -12,9 +12,9 @@ Adventure Hunt is a 2D platformer game developed entirely in Java. This game pro
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [System Architecture](#system-architecture)
-- [Code Overview](#code-overview)
+
 - [Future Enhancements](#future-enhancements)
-- [License](#license)
+
 
 ## Features
 
