@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import entity.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 public class GamePanel extends JPanel  implements Runnable{   // the class inherites JPanel class
@@ -26,16 +27,25 @@ public class GamePanel extends JPanel  implements Runnable{   // the class inher
 	//WORLD SETTINGS
 	public final int maxWorldCol=50;
 	public final int maxWorldRow=50;
-	public final int worldWidth=tileSize*maxWorldCol;
-	public final int worldHeight= tileSize*maxWorldRow;
+
 	
 	//FPS
-	int FPS=120;    
+	int FPS=120;  
+	
+	//SYSTEM
 	TileManager tileM=new TileManager(this);
 	KeyHandler keyH= new KeyHandler();
-	Thread gameThread;
+	Sound music=new Sound();
+	Sound se=new Sound();
 	public CollisionChecker cChecker =new CollisionChecker(this);
+	public AssetSetter aSetter=new AssetSetter(this);
+	public UI ui=new UI(this);
+	Thread gameThread;
+	
+	//ENTITY AND OBJECT
 	public Player player=new Player(this,keyH);
+	public SuperObject obj[]= new SuperObject[10];  //this is used to pick up upto 10 items at an time visible on the screen 
+	
 	
 	
 	public GamePanel() {               // constructor
@@ -46,6 +56,14 @@ public class GamePanel extends JPanel  implements Runnable{   // the class inher
 		this.setFocusable(true);   // with this, this GamePael can be "focused" to receive key input
 		
 	}
+	
+	public void setupGame() {
+		aSetter.setObject(); 			// create this method so we can add other stuff in the future
+		
+		playMusic(0);
+		
+	}
+	
 	public void startGameThread()
 	{
 		gameThread=new Thread(this);
@@ -112,7 +130,7 @@ public class GamePanel extends JPanel  implements Runnable{   // the class inher
 							drawCount++;
 			}			
 			if(timer>=1000000000) {
-				System.out.println("FPS:"+drawCount);
+				//System.out.println("FPS:"+drawCount);
 				drawCount=0;
 				timer=0;
 			}
@@ -128,13 +146,43 @@ public class GamePanel extends JPanel  implements Runnable{   // the class inher
 		super.paintComponent(g);
 		
 		Graphics2D g2= (Graphics2D)g; // Graphics2D:it is a class extending the graphics class that provides more control over geometry, color management, text layout
+		//TILE
 		tileM.draw(g2);    // we have types this line bfore player.draw as we have to get the bground img first and tn folled by the player
 		
+		//OBJECT
+		for(int i=0;i<obj.length;i++) {
+			if(obj[i]!=null) {
+				obj[i].draw(g2,this);
+			}
+		}
+		
+		
+		
+		
+		//PLAYER
 		player.draw(g2);
 		
-		g2.dispose(); // dispose of this graphics context and release any system resource that it is using 
+		//UI
+		ui.draw(g2);
 		
+		g2.dispose(); // dispose of this graphics context and release any system resource that it is using 			
+	}
+	
+	public void playMusic(int i) {
 		
+		music.setFile(i);
+		music.play();
+		music.loop();
+	}
+	public void stopMusic() {
+		music.stop();
+	}
+	public void playSE(int i) {
+		
+		se.setFile(i);;
+		se.play();
 		
 	}
+	
+	
 	}

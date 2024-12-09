@@ -13,6 +13,7 @@ public class Entity {   // this stores variables that will be used in player, mo
 	public int spriteCounter=0;  
 	public int spritNum=1;
 	public Rectangle solidArea; // we can create an invisible rectangle , and we can store dataa x,y,width,height
+	public int solidAreaDefaultX,solidAreaDefaultY;
 	public boolean collisionOn=false;
 	
 }
